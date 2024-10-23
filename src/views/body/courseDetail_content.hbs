@@ -1,0 +1,68 @@
+<div class="row">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8">
+        <a href="/courseDetail/{{schedule._id}}">
+            <button class="btn btn-primary mt-3">Quay Lại</button>
+        </a>
+        <div class="content-section mb-3" style="text-align: center;">
+            <h2>{{content.tittle}}: {{content.subTittle}}</h2>
+        </div>
+        {{#if content.video}}
+        <div class="video-section mt-4" style="width: 80%; margin: 0 auto; text-align: center;">
+            <video controls style="width: 100%; max-width: 800px; height: 450px; object-fit: cover;">
+                <source src="{{content.video}}" type="video/mp4">
+            </video>
+            <p style="text-align: center;">Video Bài Giảng</p>
+        </div>
+        {{/if}}
+        {{#if content.body}}
+        <div class="content-section" style="white-space: pre-line; text-align: justify">
+            <p> <strong>Nội dung: </strong> {{content.body}}</p>
+        </div>
+        {{else}}
+        <p><strong>Chưa có nội dung!!! </strong></p>
+        {{/if}}
+        <div class="content-section mt-3">
+            <p class="d-inline-flex gap-1">
+                <a class="btn btn-secondary" data-bs-toggle="collapse" href="#collapseExample" role="button"
+                    aria-expanded="false" aria-controls="collapseExample">
+                    Chỉnh sửa
+                </a>
+            </p>
+            <div class="collapse" id="collapseExample">
+                <div class="mt-4 border p-2 mb-2 border-opacity-25 rounded border-secondary">
+                    <form method="post" action="/courseDetail/{{schedule._id}}/{{content._id}}/fix?_method=PATCH"
+                        enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="tittle-1" class="form-label">Tiêu đề</label>
+                            <input type="text" class="form-control" id="tittle-1" value="{{content.tittle}}"
+                                name="tittle" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="content-1" class="form-label">Mô tả</label>
+                            <input class="form-control" id="content-1" rows="3" value="{{content.subTittle}}"
+                                name="subTittle">
+                        </div>
+                        <div class="mb-3">
+                            <label for="content-2" class="form-label">Nội dung</label>
+                            <textarea class="form-control" id="content-2" rows="3"
+                                name="body">{{content.body}}</textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="formFile" class="form-label">Ảnh minh họa</label>
+                            <input class="form-control form-control-sm" type="file" name="img">
+                        </div>
+                        <div class="mb-3">
+                            <label for="formFile" class="form-label">Video bài giảng</label>
+                            <input class="form-control form-control-sm" type="file" name="video">
+                        </div>
+                        <div aria-label="Basic outlined example" style="width: auto">
+                            <button class="btn btn-primary" type="submit">Lưu</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2"></div>
+</div>

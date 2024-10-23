@@ -1,0 +1,107 @@
+<div class="row">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8 mt-4">
+        <a href="/" style="margin-left: 25px;">
+            <button class="btn btn-primary">Quay Lại</button>
+        </a>
+        <div style="text-align: center;" get-id="{{schedule._id}}" class="mt-3 mb-3">
+            <h1>{{schedule.courseName}} - {{schedule.teacherName}}</h1>
+        </div>
+        <div class="content-section mt-3" style="margin-left: 25px; margin-right: 67px">
+            <p class="d-inline-flex gap-1">
+                <a href="/courseDetail/{{schedule._id}}/manageStudents" class="btn btn-primary">Quản lý sinh viên</a>
+                <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button"
+                    aria-expanded="false" aria-controls="collapseExample">
+                    Thêm đề mục
+                </a>
+            </p>
+            <div class="collapse" id="collapseExample">
+                <div class="border p-2 border-opacity-25 rounded border-secondary" new-content="new">
+                    <form method="post" action="/courseDetail/{{schedule._id}}/addTittle?_method=PATCH"
+                        enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="tittle-1" class="form-label">Tiêu đề</label>
+                            <input type="text" class="form-control" id="tittle-1" name="tittle" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="content-1" class="form-label">Mô tả</label>
+                            <input class="form-control" id="content-1" rows="3" name="subTittle">
+                        </div>
+                        <div class="mb-3">
+                            <label for="content-1" class="form-label">Nội dung</label>
+                            <textarea class="form-control" id="content-1" rows="3" name="body"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="formFile" class="form-label">Ảnh minh họa</label>
+                            <input class="form-control form-control-sm" type="file" name="img">
+                        </div>
+                        <div class="mb-3">
+                            <label for="formFile" class="form-label">Video bài giảng</label>
+                            <input class="form-control form-control-sm" type="file" name="video">
+                        </div>
+                        <div aria-label="Basic outlined example" style="width: auto">
+                            <button class="btn btn-primary" type="submit">Thêm</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {{#each schedule.content}}
+        <div class="cot-3 container">
+            <div class="card" style="width: 100%;">
+                <img src="{{defaultImg this.img '/img/default/courseDetail.jpg'}}" class=" card-img-top" alt=""
+                    style="width: 100%; height: 150px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">{{this.tittle}}</h5>
+                    <p class="card-text" style="width: 100%; height: 50px">{{this.subTittle}}</p>
+                    <a href="/courseDetail/{{../schedule._id}}/{{this._id}}/detail" class="btn btn-success">Chi
+                        tiết</a>
+                    <a href="#" class="btn btn-danger" data-id="{{this._id}}" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal">Xóa</a>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+    <div class="col-lg-2"></div>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Xóa đề mục</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Bạn có chắn chắn muốn xóa đề mục này?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="checkDelete">Có</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Không</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form method="post" action="" id="form-delete"></form>
+
+<script>
+    const dlts = document.querySelectorAll('[data-id]');
+    const scheduleId = document.querySelector('[get-id]');
+    const checkDelete = document.querySelector('#checkDelete');
+    let form = document.querySelector('#form-delete');
+    dlts.forEach(dlt => {
+        dlt.addEventListener('click', (event) => {
+            event.preventDefault();
+            const contentId = dlt.getAttribute('data-id');
+            checkDelete.setAttribute('data-id', contentId);
+        })
+    })
+    checkDelete.addEventListener('click', () => {
+        const id = scheduleId.getAttribute('get-id');
+        const contentId = checkDelete.getAttribute('data-id');
+        form.action = `/courseDetail/${id}/${contentId}/delete?_method=PATCH`;
+        form.submit();
+    })
+</script>

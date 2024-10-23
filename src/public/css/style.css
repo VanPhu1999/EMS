@@ -1,0 +1,52 @@
+.container {
+    display: flex;
+    /* Sử dụng flexbox */
+    align-items: flex-start;
+    /* Căn các thẻ card lên trên cùng */
+    flex-wrap: wrap;
+    /* Cho phép xuống hàng khi không đủ chỗ */
+    gap: 16px;
+    /* Khoảng cách giữa các thẻ */
+    margin-top: 20px;
+    /* Khoảng cách từ trên cùng */
+}
+
+.card-img-top {
+    width: 100%;
+    /* Chiếm toàn bộ chiều rộng thẻ */
+    height: 200px;
+    /* Đặt chiều cao cố định */
+    object-fit: fill;
+    /* Đảm bảo ảnh lấp đầy không gian */
+}
+
+.avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.avatar-2 {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+
+
+.cot-3 {
+    width: 32%;
+    display: inline-block;
+}
+
+.dropdown-menu[data-bs-popper] {
+    top: 100%;
+    right: 0 !important;
+    left: auto !important;
+    margin-top: .125rem;
+}
+
+.border-cus {
+    border: 1px solid black;
+    border-radius: 10px;
+}

@@ -1,0 +1,34 @@
+<div class="container">
+    <div class="row" style="width: 100%">
+        <div class="btn-group" role="group" aria-label="Basic outlined example" style="width: auto">
+            <button type="button" btn-stt="all" class="btn btn-primary">Tất Cả</button>
+            <button type="button" btn-stt="Đang Học" class="btn btn-primary">Đang Học</button>
+            <button type="button" btn-stt="Kết Thúc" class="btn btn-primary">Kết Thúc</button>
+        </div>
+    </div>
+    {{#each schedules}}
+    <div class="card cot-3">
+        <div class="card-header bg-dark" style="color: white">
+            {{this.courseName}}
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">{{this.teacherName}}</h5>
+            <p class="card-text" style="height: 50px;">Học kỳ: {{this.semester}}</p>
+            <p class="card-text" style="height: 20px;">Tình trạng: {{this.state}}</p>
+            <a href="/courseDetail/{{this._id}}" class="btn btn-primary" style="width: 30%">Xem</a>
+        </div>
+    </div>
+    {{/each}}
+</div>
+
+<script>
+    const btn_stts = document.querySelectorAll('[btn-stt]');
+    let url = new URL(window.location.href);
+    btn_stts.forEach(btn_stt => {
+        btn_stt.addEventListener('click', () => {
+            const stt = btn_stt.getAttribute('btn-stt');
+            url.searchParams.set("btn-stt", stt);
+            window.location.href = url.href;
+        })
+    })
+</script>

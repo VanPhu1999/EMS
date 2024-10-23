@@ -1,0 +1,53 @@
+<div class="row mt-4">
+    <div class="col-lg-4"></div>
+    <div class="col-lg-4">
+        <a href="/addSchedule">
+            <button class="btn btn-primary mt-3 mb-3">Quay Lại</button>
+        </a>
+        <h1 style="text-align: center;">Chỉnh sửa lịch học</h1>
+    </div>
+    <div class="col-lg-4"></div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-lg-4"></div>
+    <div class="col-lg-4 border-cus">
+        <form method="post" action="/addSchedule/{{schedule._id}}?_method=PATCH">
+            <div class="form-group mt-3">
+                <label class="mb-2">Tên giảng viên</label>
+                <input type="text" class="form-control" name="teacherName" required value="{{schedule.teacherName}}">
+            </div>
+            <div class="form-group mt-3">
+                <label class="mb-2">Mã giảng viên</label>
+                <input type="text" class="form-control" name="teacherId" value="{{schedule.teacherId}}" required>
+            </div>
+            <div class="form-group mt-3">
+                <label class="mb-2">Học kỳ</label>
+                <input type="text" class="form-control" name="semester" value="{{schedule.semester}}" required>
+            </div>
+            <div class="form-group mt-3">
+                <label class="mb-2">Thứ</label>
+                <input type="text" class="form-control" name="day" value="{{schedule.day}}" required>
+            </div>
+            <div class="form-group mt-3">
+                <label class="mb-2">Tiết</label>
+                <input type="text" class="form-control" name="period" value="{{schedule.period}}" required>
+            </div>
+            <div class="form-group mt-3">
+                <label class="mb-2">Tình trạng</label>
+                <select id="role-user" class="form-select" aria-label="Default select example" name="state" required>
+                    <option value="Đang Học" {{#if (checkRoleFix schedule.state "Đang Học" )}}selected{{/if}}>Đang học
+                    </option>
+                    <option value="Kết Thúc" {{#if (checkRoleFix schedule.state "Kết Thúc" )}}selected{{/if}}>Kết thúc
+                    </option>
+                </select>
+            </div>
+            <div style="display: flex; justify-content: center;">
+                <button id="btn" type="submit" class="btn btn-primary mt-3 mb-3" style="width: 100%; height: 50px">
+                    Thay đổi
+                </button>
+            </div>
+        </form>
+    </div>
+    <div class="col-lg-4"></div>
+</div>

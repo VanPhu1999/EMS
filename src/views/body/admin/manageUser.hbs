@@ -1,0 +1,74 @@
+<div class="row mt-4">
+    <div class="col-lg-3"></div>
+    <div class="col-lg-6" style="text-align: center;">
+        <h1>Danh sách người dùng</h1>
+        <form method="get" action="/manageUser?info={{info-input.value}}" id="form">
+            <div class="form-group" style="justify-items: center;">
+                <input type="text" class="form-control" id="info-input" style="width: 50%; display: inline-block"
+                    name="info" placeholder="Nhập tên/mã người dùng">
+                <button style="submit" class="btn btn-primary mt-3 mb-3">
+                    Tìm kiếm
+                </button>
+            </div>
+        </form>
+        <div>
+            <a href="/manageUser/add">
+                <button class="btn btn-primary mt-3 mb-3">Thêm người dùng mới</button>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3"></div>
+</div>
+
+{{#if search}}
+<div class="row">
+    <div class="col-lg-3"></div>
+    <div class="col-lg-6">
+        <div class="row" style="width: 100%">
+            <div class="btn-group" role="group" aria-label="Basic outlined example" style="width: auto">
+                <button type="button" btn-stt="all" class="btn btn-primary">Tất cả</button>
+                <button type="button" btn-stt="student" class="btn btn-primary">Sinh viên</button>
+                <button type="button" btn-stt="teacher" class="btn btn-primary">Giảng viên</button>
+                <button type="button" btn-stt="admin" class="btn btn-primary">Admin</button>
+            </div>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Tên Người Dùng</th>
+                    <th scope="col">Mã Người Dùng</th>
+                    <th scope="col">Loại</th>
+                    <th scope="col">Khoa</th>
+                    <th scope="col">Chỉnh sửa</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each searchUsers}}
+                <tr>
+                    <td>{{sum @index 1}}</td>
+                    <td>{{this.name}}</td>
+                    <td>{{this.userId}}</td>
+                    <td>{{roletoString this.role}}</td>
+                    <td>{{this.faculty}}</td>
+                    <td><a href="/manageUser/{{this._id}}">Chỉnh sửa</a></td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+    <div class="col-lg-3"></div>
+</div>
+{{/if}}
+
+<script>
+    const btns = document.querySelectorAll('[btn-stt]');
+    let url = new URL(window.location.href);
+    btns.forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const stt = btn.getAttribute("btn-stt");
+            url.searchParams.set("btn-stt", stt);
+            window.location.href = url.href;
+        })
+    });
+</script>

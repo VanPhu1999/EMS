@@ -1,0 +1,70 @@
+<div class="row mt-4">
+    <div class="col-lg-4"></div>
+    <div class="col-lg-4">
+        <a href="/manageUser">
+            <button class="btn btn-primary mt-3 mb-3">Quay Lại</button>
+        </a>
+        <h1 style="text-align: center;">Chỉnh sửa người dùng</h1>
+    </div>
+    <div class="col-lg-4"></div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-lg-4"></div>
+    <div class="col-lg-4 border-cus">
+        <form method="post" action="/manageUser/{{fixUser._id}}?_method=PATCH">
+            <div class="form-group mt-3">
+                <label class="mb-2">Tên người dùng</label>
+                <input type="text" class="form-control" name="name" required value="{{fixUser.name}}">
+            </div>
+            <div class="form-group mt-3">
+                <label class="mb-2">Mã người dùng</label>
+                <input type="text" class="form-control" name="userId" value="{{fixUser.userId}}" required>
+            </div>
+            <div class="form-group mt-3">
+                <label class="mb-2">Loại người dùng</label>
+                <select id="role-user" class="form-select" aria-label="Default select example" name="role" required>
+                    <option value="student" {{#if (checkRoleFix fixUser.role "student" )}}selected{{/if}}>Sinh viên
+                    </option>
+                    <option value="teacher" {{#if (checkRoleFix fixUser.role "teacher" )}}selected{{/if}}>Giảng viên
+                    </option>
+                    <option value="admin" {{#if (checkRoleFix fixUser.role "admin" )}}selected{{/if}}>Admin</option>
+                </select>
+            </div>
+            <div class="form-group mt-3" id="facultyInput" style="display: none;">
+                <label class="mb-2">Khoa</label>
+                <input type="text" class="form-control" name="faculty" value="{{fixUser.faculty}}" required>
+            </div>
+            <div class="form-group mt-3">
+                <label class="mb-2">Ngày sinh</label>
+                <input type="date" class="form-control" name="dateOfBirth" value="{{fixUser.dateOfBirth}}" required>
+            </div>
+            <div class="form-group mt-3">
+                <label class="mb-2">Địa chỉ</label>
+                <input type="text" class="form-control" name="address" value="{{fixUser.address}}" required>
+            </div>
+            <div style="display: flex; justify-content: center;">
+                <button id="btn" type="submit" class="btn btn-primary mt-3 mb-3" style="width: 100%; height: 50px">
+                    Thay đổi
+                </button>
+            </div>
+        </form>
+    </div>
+    <div class="col-lg-4"></div>
+</div>
+
+<script>
+    const role = document.querySelector('#role-user');
+    const faculty = document.querySelector('#facultyInput');
+    role.addEventListener('change', () => {
+        const value = role.value;
+        if (value === "student" || value === "teacher") {
+            faculty.style.display = "block";
+        } else {
+            faculty.style.display = "none";
+        }
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        role.dispatchEvent(new Event('change'));
+    });
+</script>

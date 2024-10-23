@@ -1,0 +1,98 @@
+<div class="row mt-4">
+    <div class="col-lg-3"></div>
+    <div class="col-lg-6">
+        <h1 style="text-align: center;">Danh sách các lịch học</h1>
+        <form method="get" action="/addSchedule?info={{info-input.value}}" id="form">
+            <div class="form-group" style="justify-items: center; text-align: center;">
+                <input type="text" class="form-control" id="info-input" style="width: 50%; display: inline-block"
+                    name="info" placeholder="Nhập tên/mã người dùng">
+                <button style="submit" class="btn btn-primary mt-3 mb-3">
+                    Tìm kiếm
+                </button>
+            </div>
+        </form>
+        <div class="mb-2" style="text-align: center;">
+            <a href="/addSchedule/add">
+                <button class="btn btn-primary mt-3 mb-3">Thêm lịch học mới</button>
+            </a>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Tên Môn Học</th>
+                    <th scope="col">Mã Môn Học</th>
+                    <th scope="col">Học kỳ</th>
+                    <th scope="col">Giảng Viên</th>
+                    <th scope="col">Thứ</th>
+                    <th scope="col">Tiết</th>
+                    <th scope="col">Số Lượng</th>
+                    <th scope="col">Tình Trạng</th>
+                    <th scope="col" colspan="3">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#if warning}}
+                <tr>
+                    <td colspan="9" style="text-align: center;">{{warning}}</td>
+                </tr>
+                {{else}}
+                {{#each schedules}}
+                <tr>
+                    <td>{{sum @index 1}}</td>
+                    <td>{{this.courseName}}</td>
+                    <td>{{this.courseId}}</td>
+                    <td>{{this.semester}}</td>
+                    <td>{{this.teacherName}}</td>
+                    <td>{{this.day}}</td>
+                    <td>{{this.period}}</td>
+                    <td>{{this.studentIds.length}}/40</td>
+                    <td>{{this.state}}</td>
+                    <td><a href="/courseDetail/{{this._id}}">Xem</a></td>
+                    <td><a href="/addSchedule/{{this._id}}">Chỉnh sửa</a></td>
+                    <td><a href="#" data-id="{{this._id}}" data-bs-toggle="modal" data-bs-target="#checkDel">Xóa</a>
+                    </td>
+                </tr>
+                {{/each}}
+                {{/if}}
+            </tbody>
+        </table>
+    </div>
+    <div class="col-lg-3"></div>
+</div>
+
+<div class="modal fade" id="checkDel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Xóa lịch học</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Bạn có chắc muốn xóa lịch học?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="checkDelete">Có</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Không</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form method="post" action="" id="form-del"></form>
+
+<script>
+    let dlts = document.querySelectorAll('[data-id]');
+    let form = document.querySelector('#form-del');
+    let checkDel = document.querySelector('#checkDelete');
+    dlts.forEach(dlt => {
+        dlt.addEventListener('click', (event) => {
+            event.preventDefault();
+            const id = dlt.getAttribute('data-id');
+            form.action = `addSchedule/${id}/delete?_method=DELETE`;
+        })
+    });
+    checkDel.addEventListener('click', () => {
+        form.submit();
+    })
+</script>

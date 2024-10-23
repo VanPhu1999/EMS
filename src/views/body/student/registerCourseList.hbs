@@ -1,0 +1,74 @@
+<div class="row">
+    <div class="col-lg-3"></div>
+    <div class="col-lg-6">
+        <div class="form-group" style="justify-items: center;">
+            <a href="/registerCourse">
+                <button class="btn btn-primary mt-3 mb-3">
+                    Quay lại
+                </button>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3"></div>
+</div>
+<div class="row">
+    <div class="col-lg-3"></div>
+    <div class="col-lg-6">
+        <h1 style="text-align: center;">Danh sách đã đăng ký</h1>
+        {{#each schedules}}
+        <table class="table" style="margin-bottom: 50px">
+            <p><strong>Học kỳ {{this.semester}}</strong></p>
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Tên Môn Học</th>
+                    <th scope="col">Mã Môn Học</th>
+                    <th scope="col">Giảng Viên</th>
+                    <th scope="col">Thứ</th>
+                    <th scope="col">Tiết</th>
+                    <th scope="col">Số Lượng</th>
+                    <th scope="col">Tình Trạng</th>
+                    <th scope="col">Thay Đổi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each this.schedule}}
+                <tr>
+                    <td>{{sum @index 1}}</td>
+                    <td>{{this.courseName}}</td>
+                    <td>{{this.courseId}}</td>
+                    <td>{{this.teacherName}}</td>
+                    <td>{{this.day}}</td>
+                    <td>{{this.period}}</td>
+                    <td>{{this.studentIds.length}}/40</td>
+                    <td><span>Đã đăng ký</span></td>
+                    {{#if (checkRoleFix ../this.semester ../../semesterCheck)}}
+                    <td><a data-id="{{this._id}}" href="#">Hủy đăng ký</a></td>
+                    {{else}}
+                    <td>
+                        <p>Hủy đăng ký</p>
+                    </td>
+                    {{/if}}
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        {{/each}}
+    </div>
+    <div class="col-lg-3"></div>
+</div>
+
+<form method="post" action="" id="form-delete"></form>
+
+<script>
+    const dlts = document.querySelectorAll('[data-id]');
+    let form = document.querySelector('#form-delete');
+    dlts.forEach(dlt => {
+        dlt.addEventListener('click', (event) => {
+            event.preventDefault();
+            const id = dlt.getAttribute('data-id');
+            form.action = `/registerCourse/${id}/delete?_method=PATCH`;
+            form.submit();
+        })
+    })
+</script>

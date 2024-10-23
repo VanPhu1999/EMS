@@ -1,0 +1,29 @@
+<div class="row mt-4">
+    <div class="col-lg-4"></div>
+    <div class="col-lg-4 border-cus">
+        <div style="text-align: center;">
+            <img src="img/logo.png" alt="">
+        </div>
+        <form method="post" action="/login">
+            <div class="form-group mt-3">
+                <label for="exampleInputEmail1" class="mb-2">Tên đăng nhập</label>
+                <input type="text" class="form-control" placeholder="Tên đăng nhập" name="username">
+            </div>
+            <div class="form-group mt-3 mb-3">
+                <label for="exampleInputPassword1" class="mb-2">Mật khẩu</label>
+                <input type="password" name="password" class="form-control" placeholder="Mật khẩu">
+            </div>
+            {{#if tb}}
+            <p style="color: red" class="text-center">{{tb}}</p>
+            {{/if}}
+            <div style="display: flex; justify-content: center;">
+                <button type="submit" class="btn btn-primary mt-3 mb-3" style="width: 100%; height: 50px">Đăng
+                    nhập</button>
+            </div>
+            <div class="mb-3" style="text-align: center">
+                <a href="#" style="color: red;">Quên mật khẩu</a>
+            </div>
+        </form>
+    </div>
+    <div class="col-lg-4"></div>
+</div>

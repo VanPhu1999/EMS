@@ -1,0 +1,62 @@
+<div class="row">
+    <nav class="navbar navbar-expand-lg navbar-dark" style="align-items: center; background-color:#0388B4;">
+        <div class=" collapse navbar-collapse" id="navbarSupportedContent" style="justify-content: space-between;">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" style="margin-left: 30px" href="/">
+                        <img src="//lms.hcmut.edu.vn/pluginfile.php/3/theme_academi/logo/1725955904/logoBK.png" alt=""
+                            class="avatar-2">
+                        Trang Chủ
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/schedule">
+                        Thời khóa biểu</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/registerCourse">
+                        Đăng ký môn học</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/manageUser">
+                        Quản lý người dùng</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/addCourse">
+                        Quản lý môn học</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/addSchedule">
+                        Quản lý lịch học</a>
+                </li>
+            </ul>
+            <div class="d-flex">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                    aria-expanded="true" style="color: white;">
+                    <img src="/img/avatar.jpg" alt="" class="avatar">
+                    {{user.name}}
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" href="#">Hồ sơ cá nhân</a></li>
+                    <li><a class="dropdown-item" href="#">Cài đặt</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li>
+                        <a class="dropdown-item" id="logout" href="#">Đăng xuất</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<form method="post" action="/logout" id="logout-form"></form>
+
+<script>
+    const logout = document.querySelector('#logout');
+    const logoutForm = document.querySelector('#logout-form');
+    logout.onclick = () => {
+        logoutForm.submit();
+    };
+</script>
