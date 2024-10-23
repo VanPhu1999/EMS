@@ -69,6 +69,8 @@ app.use(express.static(path.join(__dirname, 'src/public')));
 const db = require("./src/config/database");
 db.connect();
 
+console.log(process.env.PORT);
+
 //cau hinh route
 const route = require("./src/routes/index");
 route(app);
