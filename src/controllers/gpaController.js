@@ -2,7 +2,7 @@ const User = require("../models/users");
 const Course = require("../models/courses");
 const Schedule = require("../models/schedules");
 
-const schedule = {
+const gpa = {
     render: async (req, res) => {
         const user = await User.findById(req.user.id).lean();
         let schedules = [];
@@ -10,11 +10,11 @@ const schedule = {
             let schedule = await Schedule.findById(registeredCourse.ScheduleId).lean();
             if (schedule) {
                 const course = await Course.findById(schedule.course_Id).lean();
-                const teacher = await User.findById(schedule.teacherId).lean();
-                if (teacher) schedule.teacherName = teacher.name;
                 schedule.courseName = course.courseName;
                 schedule.courseId = course.courseId;
                 schedule.credit = course.credit;
+                const index = schedule.studentIds.findIndex(obj => obj.studentId.equals(user._id));
+                schedule.studentIds = schedule.studentIds[index];
                 let flag = false;
                 for (const obj of schedules) {
                     if (obj.semester === schedule.semester) {
@@ -39,8 +39,8 @@ const schedule = {
                 return 0;
             });
         }
-        res.render("schedule", {
-            title: "Thời khóa biểu",
+        res.render("gpa", {
+            title: "Bảng điểm",
             login: true,
             user: user,
             schedules: schedules
@@ -48,4 +48,4 @@ const schedule = {
     }
 }
 
-module.exports = schedule;
+module.exports = gpa;

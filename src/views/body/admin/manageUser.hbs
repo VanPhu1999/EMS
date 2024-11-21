@@ -1,6 +1,6 @@
 <div class="row mt-4">
-    <div class="col-lg-3"></div>
-    <div class="col-lg-6" style="text-align: center;">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8" style="text-align: center;">
         <h1>Danh sách người dùng</h1>
         <form method="get" action="/manageUser?info={{info-input.value}}" id="form">
             <div class="form-group" style="justify-items: center;">
@@ -17,13 +17,13 @@
             </a>
         </div>
     </div>
-    <div class="col-lg-3"></div>
+    <div class="col-lg-2"></div>
 </div>
 
 {{#if search}}
 <div class="row">
-    <div class="col-lg-3"></div>
-    <div class="col-lg-6">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8">
         <div class="row" style="width: 100%">
             <div class="btn-group" role="group" aria-label="Basic outlined example" style="width: auto">
                 <button type="button" btn-stt="all" class="btn btn-primary">Tất cả</button>
@@ -32,37 +32,94 @@
                 <button type="button" btn-stt="admin" class="btn btn-primary">Admin</button>
             </div>
         </div>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Tên Người Dùng</th>
-                    <th scope="col">Mã Người Dùng</th>
-                    <th scope="col">Loại</th>
-                    <th scope="col">Khoa</th>
-                    <th scope="col">Chỉnh sửa</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{#each searchUsers}}
-                <tr>
-                    <td>{{sum @index 1}}</td>
-                    <td>{{this.name}}</td>
-                    <td>{{this.userId}}</td>
-                    <td>{{roletoString this.role}}</td>
-                    <td>{{this.faculty}}</td>
-                    <td><a href="/manageUser/{{this._id}}">Chỉnh sửa</a></td>
-                </tr>
-                {{/each}}
-            </tbody>
-        </table>
+        {{#if warning}}
+        <p style="text-align: center; color: red;">{{warning}}</p>
+        {{/if}}
+        {{#if success}}
+        <p style="text-align: center; color: green;">{{success}}</p>
+        {{/if}}
+        <div style="height: 500px;">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Tên Người Dùng</th>
+                        <th scope="col">Mã Người Dùng</th>
+                        <th scope="col">Loại</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Khoa</th>
+                        <th scope="col" colspan="2">Chỉnh sửa</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each searchUsers}}
+                    <tr>
+                        <td>{{calcIndex @index ../page 10}}</td>
+                        <td>{{this.name}}</td>
+                        <td>{{this.userId}}</td>
+                        <td>{{roletoString this.role}}</td>
+                        <td>{{this.email}}</td>
+                        <td>{{this.faculty}}</td>
+                        <td><a href="/manageUser/{{this._id}}">Chỉnh sửa</a></td>
+                        <td><a href="#" data-id="{{this._id}}" data-bs-toggle="modal" data-bs-target="#checkDel">Xóa</a>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+        <div style="display: flex; justify-content: center; align-items: center;">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item" style="{{#if (checkPre page 1)}}visibility: hidden;{{/if}}">
+                        <a class="page-link" href="?page={{subtract page 1}}&info={{info}}&btn-stt={{stt}}"
+                            aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    {{#each totalPages}}
+                    <li class="page-item {{#if (checkRoleFix this ../page)}}active{{/if}}"><a class="page-link"
+                            href="{{#if (checkRoleFix this ../page)}}#{{else}}?page={{this}}&info={{../info}}&btn-stt={{../stt}}{{/if}}">{{this}}</a>
+                    </li>
+                    {{/each}}
+                    <li class="page-item" style="{{#if (checkNext page totalPages.length)}}visibility: hidden;{{/if}}">
+                        <a class="page-link" href="?page={{sum page 1}}&info={{info}}&btn-stt={{stt}}"
+                            aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
     </div>
-    <div class="col-lg-3"></div>
+    <div class="col-lg-2"></div>
 </div>
 {{/if}}
 
+<div class="modal fade" id="checkDel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Xóa lịch học</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Người dùng sẽ bị xóa khỏi các lịch đang dạy hoặc đang học. Bạn có chắc muốn tiếp tục?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="checkDelete">Có</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Không</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form method="post" id="from-delete"></form>
+
 <script>
     const btns = document.querySelectorAll('[btn-stt]');
+    const dataIds = document.querySelectorAll('[data-id]');
+    const deleteBtn = document.querySelector('#checkDelete');
+    const deleteForm = document.querySelector('#from-delete');
     let url = new URL(window.location.href);
     btns.forEach((btn) => {
         btn.addEventListener('click', () => {
@@ -71,4 +128,13 @@
             window.location.href = url.href;
         })
     });
+    dataIds.forEach((dataId) => {
+        dataId.addEventListener('click', () => {
+            const data = dataId.getAttribute('data-id');
+            deleteForm.action = `/manageUser/${data}?_method=DELETE`;
+        })
+    });
+    deleteBtn.addEventListener('click', () => {
+        deleteForm.submit();
+    })
 </script>

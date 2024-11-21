@@ -1,25 +1,53 @@
-<div class="container">
-    <div class="row" style="width: 100%">
-        <div class="btn-group" role="group" aria-label="Basic outlined example" style="width: auto">
-            <button type="button" btn-stt="all" class="btn btn-primary">Tất Cả</button>
-            <button type="button" btn-stt="Đang Học" class="btn btn-primary">Đang Học</button>
-            <button type="button" btn-stt="Kết Thúc" class="btn btn-primary">Kết Thúc</button>
+<div style="height: 600px;">
+    <div class="container">
+        <div class="row" style="width: 100%">
+            <div class="btn-group" role="group" aria-label="Basic outlined example" style="width: auto">
+                <button type="button" btn-stt="all" class="btn btn-primary">Tất Cả</button>
+                <button type="button" btn-stt="Đang Học" class="btn btn-primary">Đang Học</button>
+                <button type="button" btn-stt="Kết Thúc" class="btn btn-primary">Kết Thúc</button>
+            </div>
         </div>
+        {{#each schedules}}
+        <div class="card cot-3">
+            <div class="card-header bg-dark" style="color: white">
+                {{this.courseName}}
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{this.teacherName}}</h5>
+                <p class="card-text" style="height: 50px;">Học kỳ: {{this.semester}}</p>
+                <p class="card-text" style="height: 20px;">Tình trạng: {{this.state}}</p>
+                <a href="/courseDetail/{{this._id}}" class="btn btn-primary" style="width: 30%">Xem</a>
+            </div>
+        </div>
+        {{/each}}
     </div>
-    {{#each schedules}}
-    <div class="card cot-3">
-        <div class="card-header bg-dark" style="color: white">
-            {{this.courseName}}
-        </div>
-        <div class="card-body">
-            <h5 class="card-title">{{this.teacherName}}</h5>
-            <p class="card-text" style="height: 50px;">Học kỳ: {{this.semester}}</p>
-            <p class="card-text" style="height: 20px;">Tình trạng: {{this.state}}</p>
-            <a href="/courseDetail/{{this._id}}" class="btn btn-primary" style="width: 30%">Xem</a>
-        </div>
-    </div>
-    {{/each}}
 </div>
+
+<div class="col-lg-2"></div>
+<div class="col-lg-8" style="width: 100%;">
+    <div style="display: flex; justify-content: center; align-items: center;">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item" style="{{#if (checkPre page 1)}}visibility: hidden;{{/if}}">
+                    <a class="page-link" href="?page={{subtract page 1}}&info={{info}}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                {{#each totalPages}}
+                <li class="page-item {{#if (checkRoleFix this ../page)}}active{{/if}}"><a class="page-link"
+                        href="{{#if (checkRoleFix this ../page)}}#{{else}}?page={{this}}&info={{../info}}{{/if}}">{{this}}</a>
+                </li>
+                {{/each}}
+                <li class="page-item" style="{{#if (checkNext page totalPages.length)}}visibility: hidden;{{/if}}">
+                    <a class="page-link" href="?page={{sum page 1}}&info={{info}}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<div class="col-lg-2"></div>
 
 <script>
     const btn_stts = document.querySelectorAll('[btn-stt]');
@@ -28,6 +56,7 @@
         btn_stt.addEventListener('click', () => {
             const stt = btn_stt.getAttribute('btn-stt');
             url.searchParams.set("btn-stt", stt);
+            url.searchParams.set("page", 0);
             window.location.href = url.href;
         })
     })

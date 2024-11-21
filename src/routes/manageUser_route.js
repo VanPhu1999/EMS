@@ -3,10 +3,11 @@ const route = express.Router();
 const manageUserController = require("../controllers/manageUserController");
 const middlewareController = require("../controllers/middlewareController");
 
-route.get('/add', middlewareController.verifyToken, manageUserController.renderAdd);
-route.post('/add', middlewareController.verifyToken, manageUserController.add);
-route.patch('/:id', middlewareController.verifyToken, manageUserController.fix);
-route.get('/:id', middlewareController.verifyToken, manageUserController.renderFix);
-route.get('/', middlewareController.verifyToken, manageUserController.render);
+route.get('/add', middlewareController.verifyToken, middlewareController.checkAdmin, manageUserController.renderAdd);
+route.post('/add', middlewareController.verifyToken, middlewareController.checkAdmin, manageUserController.add);
+route.patch('/:id', middlewareController.verifyToken, middlewareController.checkAdmin, manageUserController.fix);
+route.delete('/:id', middlewareController.verifyToken, middlewareController.checkAdmin, manageUserController.deleteUser);
+route.get('/:id', middlewareController.verifyToken, middlewareController.checkAdmin, manageUserController.renderFix);
+route.get('/', middlewareController.verifyToken, middlewareController.checkAdmin, manageUserController.render);
 
 module.exports = route;

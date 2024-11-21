@@ -14,28 +14,53 @@
                 <button class="btn btn-primary mt-3 mb-3">Thêm môn học mới</button>
             </a>
         </div>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Mã Môn Học</th>
-                    <th scope="col">Tên Môn Học</th>
-                    <th scope="col">Khoa</th>
-                    <th scope="col">Thao tác</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{#each courses}}
-                <tr>
-                    <td>{{sum @index 1}}</td>
-                    <td>{{this.courseId}}</td>
-                    <td>{{this.courseName}}</td>
-                    <td>{{this.courseFac}}</td>
-                    <td><a href="/addCourse/{{this._id}}">Chỉnh sửa</a></td>
-                </tr>
-                {{/each}}
-            </tbody>
-        </table>
+        <div style="height: 500px;">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Mã Môn Học</th>
+                        <th scope="col">Tín chỉ</th>
+                        <th scope="col">Tên Môn Học</th>
+                        <th scope="col">Khoa</th>
+                        <th scope="col">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each courses}}
+                    <tr>
+                        <td>{{calcIndex @index ../page 10}}</td>
+                        <td>{{this.courseId}}</td>
+                        <td>{{this.credit}}</td>
+                        <td>{{this.courseName}}</td>
+                        <td>{{this.courseFac}}</td>
+                        <td><a href="/addCourse/{{this._id}}">Chỉnh sửa</a></td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+        <div style="display: flex; justify-content: center; align-items: center;">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item" style="{{#if (checkPre page 1)}}visibility: hidden;{{/if}}">
+                        <a class="page-link" href="?page={{subtract page 1}}&info={{info}}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    {{#each totalPages}}
+                    <li class="page-item {{#if (checkRoleFix this ../page)}}active{{/if}}"><a class="page-link"
+                            href="{{#if (checkRoleFix this ../page)}}#{{else}}?page={{this}}&info={{../info}}{{/if}}">{{this}}</a>
+                    </li>
+                    {{/each}}
+                    <li class="page-item" style="{{#if (checkNext page totalPages.length)}}visibility: hidden;{{/if}}">
+                        <a class="page-link" href="?page={{sum page 1}}&info={{info}}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
     </div>
     <div class="col-lg-3"></div>
 </div>

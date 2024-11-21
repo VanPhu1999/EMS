@@ -27,7 +27,11 @@
             </div>
             <div id="userId" class="form-group mt-3">
                 <label class="mb-2">Mã người dùng</label>
-                <input type="text" class="form-control" name="userId" required>
+                <input type="text" class="form-control" name="userId" required readonly>
+            </div>
+            <div class="form-group mt-3">
+                <label class="mb-2">Email người dùng</label>
+                <input type="text" class="form-control" name="email" required>
             </div>
             <div class="form-group mt-3">
                 <label class="mb-2">Loại người dùng</label>
@@ -40,7 +44,15 @@
             </div>
             <div id="facultyInput" class="form-group mt-3">
                 <label class="mb-2">Khoa</label>
-                <input type="text" class="form-control" name="faculty" required>
+                <select class="form-select" aria-label="Default select example" name="faculty" required>
+                    <option selected>-- Chọn khoa --</option>
+                    <option value="Điện Điện-Tử">Điện Điện-Tử
+                    </option>
+                    <option value="Khoa Học và Kỹ Thuật Máy Tính">Khoa Học và Kỹ Thuật Máy Tính
+                    </option>
+                    <option value="Khoa Học Ứng Dụng">Khoa Học Ứng Dụng
+                    </option>
+                </select>
             </div>
             <div class="form-group mt-3">
                 <label class="mb-2">Ngày sinh</label>
@@ -70,16 +82,41 @@
     <div class="col-lg-4"></div>
 </div>
 
+<div id="users" data="{{users}}"></div>
+
 <script>
+    const getUsers = document.querySelector('#users');
+    let users = JSON.parse(getUsers.getAttribute('data'));
     const role = document.querySelector('#role-user');
     const faculty = document.querySelector('#facultyInput');
+    const currentDate = new Date();
+    const userId = document.querySelector('[name="userId"]');
+    let month = currentDate.getMonth();
+    let year = currentDate.getFullYear();
+    let yearAcademy;
+    if (month >= 8) yearAcademy = year.toString().slice(-2);
+    else tempUserId = (year - 1).toString().slice(-2);
     role.addEventListener('change', () => {
         const value = role.value;
+        userId.value = "";
+        let tempUserId = "";
         if (value === "student" || value === "teacher") {
             faculty.style.display = "block";
+            if (value === "student") tempUserId = "SV" + yearAcademy;
+            else tempUserId = "GV" + yearAcademy;
+        } else if (value === "admin") {
+            faculty.style.display = "none";
+            tempUserId = "AD" + yearAcademy;
         } else {
             faculty.style.display = "none";
         }
+        let tempUsers = users.filter(user => user.userId.startsWith(tempUserId));
+        if (tempUsers.length == 0) tempUserId += "0001";
+        else {
+            let lastUserId = parseInt(tempUsers[tempUsers.length - 1].userId.slice(-4), 10) + 1;
+            tempUserId += lastUserId.toString().padStart(4, '0');
+        }
+        if (tempUserId.length == 8) userId.value = tempUserId;
     });
     document.addEventListener('DOMContentLoaded', function () {
         role.dispatchEvent(new Event('change'));
