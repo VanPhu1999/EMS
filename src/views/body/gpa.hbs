@@ -1,0 +1,107 @@
+<div class="row mt-4">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8">
+        <h1 style="text-align: center;">Bảng điểm sinh viên</h1>
+        <div id="renderAvg" class="mt-4 border rounded border-info"
+            style="margin-bottom: 20px; padding-top: 20px; padding-left: 20px">
+            <p><strong>Sinh viên: </strong>{{user.name}}</p>
+            <p><strong>Mã số sinh viên: </strong>{{user.userId}}</p>
+        </div>
+        {{#if schedules}}
+        {{#each schedules}}
+        <table class="table">
+            <p><strong>Học kỳ {{this.semester}}</strong></p>
+            <thead>
+                <tr style="text-align: center;">
+                    <th scope="col">#</th>
+                    <th scope="col">Mã Môn Học</th>
+                    <th scope="col">Tín chỉ</th>
+                    <th scope="col">Tên Môn Học</th>
+                    <th scope="col">Bài tập lớn (20%)</th>
+                    <th scope="col">Giữa kỳ (30%)</th>
+                    <th scope="col">Cuối kỳ (50%)</th>
+                    <th scope="col">Tổng kết</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each this.schedule}}
+                <tr data-semester="{{this.semester}}" style="text-align: center;">
+                    <td>{{sum @index 1}}</td>
+                    <td>{{this.courseId}}</td>
+                    <td>{{this.credit}}</td>
+                    <td style="min-width: 200px;">{{this.courseName}}</td>
+                    <td>{{showEmptyData this.studentIds.btl}}</td>
+                    <td>{{showEmptyData this.studentIds.gk}}</td>
+                    <td>{{showEmptyData this.studentIds.ck}}</td>
+                    <td>{{showEmptyData (calcFinal this.studentIds.btl this.studentIds.gk this.studentIds.ck)}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        <div style="margin-bottom: 70px" semester="{{this.semester}}"></div>
+        {{/each}}
+        {{else}}
+        <div style="text-align: center;" class="mt-4">
+            <span>Chưa đăng có môn học nào được đăng ký. <a href="/registerCourse">Đăng ký ngay.</a></span>
+        </div>
+        {{/if}}
+    </div>
+    <div class="col-lg-2"></div>
+</div>
+
+<form method="post" action="" id="form-delete"></form>
+
+<script>
+    const dlts = document.querySelectorAll('[data-id]');
+    let form = document.querySelector('#form-delete');
+    dlts.forEach(dlt => {
+        dlt.addEventListener('click', (event) => {
+            event.preventDefault();
+            const id = dlt.getAttribute('data-id');
+            form.action = `/registerCourse/${id}/delete?_method=PATCH`;
+            form.submit();
+        })
+    });
+    let semesters = document.querySelectorAll('[semester]');
+    let sumAvg = 0;
+    let sumCount = 0;
+    let sumTctl = 0;
+    semesters.forEach(semester => {
+        const data = semester.getAttribute('semester');
+        let scores = document.querySelectorAll(`[data-semester="${data}"]`);
+        console.log(scores);
+        let avg = 0;
+        let tctl = 0;
+        let count = 0;
+        let allTctl = 0;
+        scores.forEach(score => {
+            console.log(score.cells[7]);
+            const pointValue = Number(score.cells[7].innerText);
+            const creditValue = Number(score.cells[2].innerText);
+            allTctl += creditValue;
+            if (pointValue >= 0) {
+                avg += pointValue * creditValue;
+                count += creditValue;
+                if (pointValue >= 5) tctl += creditValue;
+            }
+        });
+        if (count !== 0) {
+            sumAvg += avg;
+            sumCount += count;
+            avg /= count;
+            sumTctl += tctl;
+        }
+        semester.innerHTML = `
+            <p><strong>Điểm trung bình học kỳ: </strong>${avg.toFixed(1)}</p>
+            <p><strong>Số tín chỉ học kỳ: </strong>${tctl}/${allTctl}</p>
+        `;
+    });
+    let renderAvg = document.querySelector('#renderAvg');
+    document.addEventListener('DOMContentLoaded', () => {
+        if (sumCount != 0) sumAvg /= sumCount;
+        renderAvg.innerHTML += `
+            <p><strong>Tổng số tín chỉ tích lũy: </strong>${sumTctl}</p>
+            <p><strong>Điểm trung bình: </strong>${sumAvg.toFixed(1)}</p>
+        `;
+    });
+</script>

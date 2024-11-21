@@ -9,8 +9,9 @@
             <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Tên Môn Học</th>
                     <th scope="col">Mã Môn Học</th>
+                    <th scope="col">Tín chỉ</th>
+                    <th scope="col">Tên Môn Học</th>
                     <th scope="col">Thứ</th>
                     <th scope="col">Tiết</th>
                     <th scope="col">Phòng</th>
@@ -20,10 +21,12 @@
                 {{#each this.schedule}}
                 <tr>
                     <td>{{sum @index 1}}</td>
-                    <td>{{this.courseName}}</td>
                     <td>{{this.courseId}}</td>
+                    <td>{{this.credit}}</td>
+                    <td style="min-width: 200px;">{{this.courseName}}</td>
                     <td>{{this.day}}</td>
                     <td>{{this.period}}</td>
+                    <td>{{this.room}}</td>
                     <td></td>
                 </tr>
                 {{/each}}

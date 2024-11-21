@@ -19,7 +19,9 @@
             </div>
             <div class="form-group mt-3">
                 <label for="exampleInputEmail1" class="mb-2">Mã môn học</label>
-                <input type="text" class="form-control" name="courseId" required>
+                <select class="form-select" aria-label="Default select example" name="courseId" required>
+                    <option selected>-- Chọn mã môn học --</option>
+                </select>
             </div>
             <div class="form-group mt-3">
                 <label for="exampleInputEmail1" class="mb-2">Giảng viên</label>
@@ -27,11 +29,13 @@
             </div>
             <div class="form-group mt-3">
                 <label for="exampleInputEmail1" class="mb-2">Mã Giảng viên</label>
-                <input type="text" class="form-control" name="teacherId" required>
+                <select class="form-select" aria-label="Default select example" name="teacherId" required>
+                    <option selected>-- Chọn mã giảng viên --</option>
+                </select>
             </div>
             <div class="form-group mt-3">
                 <label for="exampleInputEmail1" class="mb-2">Học Kỳ</label>
-                <input type="text" class="form-control" name="semester" required>
+                <input type="text" class="form-control" name="semester" required readonly>
             </div>
             <div class="form-group mt-3">
                 <label for="exampleInputEmail1" class="mb-2">Thứ</label>
@@ -40,6 +44,10 @@
             <div class="form-group mt-3">
                 <label for="exampleInputEmail1" class="mb-2">Tiết</label>
                 <input type="text" class="form-control" name="period" required>
+            </div>
+            <div class="form-group mt-3">
+                <label for="exampleInputEmail1" class="mb-2">Phòng</label>
+                <input type="text" class="form-control" name="room" required>
             </div>
             {{#if warning}}
             <div class="mt-3">
@@ -60,3 +68,52 @@
     </div>
     <div class="col-lg-4"></div>
 </div>
+
+<div id="teachers" data="{{teachers}}"></div>
+<div id="courses" data="{{courses}}"></div>
+
+<script>
+    let getTeachers = document.querySelector('#teachers');
+    let teachers = JSON.parse(getTeachers.getAttribute('data'));
+    let getCourses = document.querySelector('#courses');
+    let courses = JSON.parse(getCourses.getAttribute('data'));
+    let courseName = document.querySelector('[name="courseName"]');
+    let courseId = document.querySelector('[name="courseId"]');
+    let teacherName = document.querySelector('[name="name"]');
+    let teacherId = document.querySelector('[name="teacherId"]');
+    courseName.addEventListener('blur', () => {
+        const value = courseName.value.trim().toLowerCase();
+        courseId.innerHTML = "";
+        courses.forEach(course => {
+            if (course.courseName.toLowerCase() == value) {
+                const option = document.createElement('option');
+                option.value = course.courseId;
+                option.textContent = course.courseId;
+                courseId.appendChild(option);
+            }
+        })
+    })
+    teacherName.addEventListener('blur', () => {
+        const value = teacherName.value.trim().toLowerCase();
+        teacherId.innerHTML = "";
+        teachers.forEach(teacher => {
+            if (teacher.name.toLowerCase() == value) {
+                const option = document.createElement('option');
+                option.value = teacher.userId;
+                option.textContent = teacher.userId;
+                teacherId.appendChild(option);
+            }
+        })
+    })
+    document.addEventListener('DOMContentLoaded', () => {
+        const currentDate = new Date();
+        const month = currentDate.getMonth();
+        const year = currentDate.getFullYear();
+        let value = year % 100;
+        if (month < 8 && month >= 6) value = value + "1";
+        else if (month < 6 && month >= 1) value = value - 1 + "3";
+        else value = value + "2";
+        const semesterRender = document.querySelector('[name="semester"]');
+        semesterRender.value = value;
+    });
+</script>

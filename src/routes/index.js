@@ -7,6 +7,12 @@ const registerCourse = require("./registerCourse_route");
 const manageUser = require("./manageUser_route");
 const courseDetail = require("./courseDetail_route");
 const schedule = require("./schedule_route");
+const gpa = require("./gpa_route");
+const infoUser = require("./infoUser_route");
+const forgotPassword = require("./forgotPassword_route");
+const resetPassword = require("./resetPassword_route");
+const changePassword = require("./changePassword_route");
+const userProfile = require("./userProfile_route");
 
 module.exports = (app) => {
     app.use("/login", login);
@@ -17,5 +23,11 @@ module.exports = (app) => {
     app.use("/manageUser", manageUser);
     app.use("/courseDetail", courseDetail);
     app.use("/schedule", schedule);
+    app.use("/gpa", gpa);
+    app.use("/infoUser", infoUser);
+    app.use("/forgotPassword", forgotPassword);
+    app.use("/resetPassword", resetPassword);
+    app.use("/changePassword", changePassword);
+    app.use("/userProfile", userProfile);
     app.use("/", home);
 }

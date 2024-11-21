@@ -1,6 +1,6 @@
 <div class="row">
-    <div class="col-lg-3"></div>
-    <div class="col-lg-6">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8">
         <div class="form-group" style="justify-items: center;">
             <a href="/courseDetail/{{schedule._id}}">
                 <button class="btn btn-primary mt-3 mb-3">
@@ -9,11 +9,11 @@
             </a>
         </div>
     </div>
-    <div class="col-lg-3"></div>
+    <div class="col-lg-2"></div>
 </div>
 <div class="row">
-    <div class="col-lg-3"></div>
-    <div class="col-lg-6">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8">
         <h1 style="text-align: center;">{{schedule.courseName}}: {{schedule.teacherName}}</h1>
         <form method="get" action="/courseDetail/{{schedule._id}}/manageStudents?info={{info-input.value}}" id="form">
             <div class="form-group mt-4" style="justify-items: center; text-align: center;">
@@ -34,7 +34,9 @@
                     <th scope="col">Điểm GK</th>
                     <th scope="col">Điểm CK</th>
                     <th scope="col">Tổng kết</th>
+                    {{#if (checkTeacher user.role)}}
                     <th scope="col">Thay Đổi</th>
+                    {{/if}}
                 </tr>
             </thead>
             <tbody>
@@ -44,13 +46,15 @@
                     <td>{{sum @index 1}}</td>
                     <td id="name{{this._id}}" student-name="{{this.name}}">{{this.name}}</td>
                     <td id="sv{{this._id}}" student-id="{{this.userId}}">{{this.userId}}</td>
-                    <td>{{this.faculty}}</td>
+                    <td style="min-width: 200px;">{{this.faculty}}</td>
                     <td data-name="btl{{this._id}}" data-btl="{{this.btl}}">{{showEmptyData this.btl}}</td>
                     <td data-name="gk{{this._id}}" data-gk="{{this.gk}}">{{showEmptyData this.gk}}</td>
                     <td data-name="ck{{this._id}}" data-ck="{{this.ck}}">{{showEmptyData this.ck}}</td>
                     <td>{{showEmptyData (calcFinal this.btl this.gk this.ck)}}</td>
+                    {{#if (checkTeacher ../user.role)}}
                     <td><a data-id="{{this._id}}" schedule-id="{{../schedule._id}}" href="#" data-bs-toggle="modal"
                             data-bs-target="#exampleModal">Chỉnh sửa điểm</a></td>
+                    {{/if}}
                 </tr>
                 {{/each}}
                 {{else}}
@@ -61,7 +65,7 @@
             </tbody>
         </table>
     </div>
-    <div class="col-lg-3"></div>
+    <div class="col-lg-2"></div>
 </div>
 
 <div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -79,7 +83,7 @@
                         <input type="text" class="form-control" id="btl" name="btl">
                     </div>
                     <div class="form-group mt-3">
-                        <label for="gk" class="mb-2">Điểm BTL</label>
+                        <label for="gk" class="mb-2">Điểm GK</label>
                         <input type="text" class="form-control" id="gk" name="gk">
                     </div>
                     <div class="form-group mt-3">

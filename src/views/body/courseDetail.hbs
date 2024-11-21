@@ -9,11 +9,15 @@
         </div>
         <div class="content-section mt-3" style="margin-left: 25px; margin-right: 67px">
             <p class="d-inline-flex gap-1">
+                {{#if (checkAdminAndTeacher user.role)}}
                 <a href="/courseDetail/{{schedule._id}}/manageStudents" class="btn btn-primary">Quản lý sinh viên</a>
+                {{/if}}
+                {{#if (checkTeacher user.role)}}
                 <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button"
                     aria-expanded="false" aria-controls="collapseExample">
                     Thêm đề mục
                 </a>
+                {{/if}}
             </p>
             <div class="collapse" id="collapseExample">
                 <div class="border p-2 border-opacity-25 rounded border-secondary" new-content="new">
@@ -56,8 +60,10 @@
                     <p class="card-text" style="width: 100%; height: 50px">{{this.subTittle}}</p>
                     <a href="/courseDetail/{{../schedule._id}}/{{this._id}}/detail" class="btn btn-success">Chi
                         tiết</a>
+                    {{#if (checkTeacher ../user.role)}}
                     <a href="#" class="btn btn-danger" data-id="{{this._id}}" data-bs-toggle="modal"
                         data-bs-target="#exampleModal">Xóa</a>
+                    {{/if}}
                 </div>
             </div>
         </div>

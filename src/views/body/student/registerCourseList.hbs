@@ -1,6 +1,6 @@
 <div class="row">
-    <div class="col-lg-3"></div>
-    <div class="col-lg-6">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8">
         <div class="form-group" style="justify-items: center;">
             <a href="/registerCourse">
                 <button class="btn btn-primary mt-3 mb-3">
@@ -9,11 +9,11 @@
             </a>
         </div>
     </div>
-    <div class="col-lg-3"></div>
+    <div class="col-lg-2"></div>
 </div>
 <div class="row">
-    <div class="col-lg-3"></div>
-    <div class="col-lg-6">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8">
         <h1 style="text-align: center;">Danh sách đã đăng ký</h1>
         {{#each schedules}}
         <table class="table" style="margin-bottom: 50px">
@@ -21,11 +21,13 @@
             <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Tên Môn Học</th>
                     <th scope="col">Mã Môn Học</th>
+                    <th scope="col">Tín chỉ</th>
+                    <th scope="col">Tên Môn Học</th>
                     <th scope="col">Giảng Viên</th>
                     <th scope="col">Thứ</th>
                     <th scope="col">Tiết</th>
+                    <th scope="col">Phòng</th>
                     <th scope="col">Số Lượng</th>
                     <th scope="col">Tình Trạng</th>
                     <th scope="col">Thay Đổi</th>
@@ -35,11 +37,13 @@
                 {{#each this.schedule}}
                 <tr>
                     <td>{{sum @index 1}}</td>
-                    <td>{{this.courseName}}</td>
                     <td>{{this.courseId}}</td>
+                    <td>{{this.credit}}</td>
+                    <td style="min-width: 200px;">{{this.courseName}}</td>
                     <td>{{this.teacherName}}</td>
                     <td>{{this.day}}</td>
                     <td>{{this.period}}</td>
+                    <td>{{this.room}}</td>
                     <td>{{this.studentIds.length}}/40</td>
                     <td><span>Đã đăng ký</span></td>
                     {{#if (checkRoleFix ../this.semester ../../semesterCheck)}}
@@ -55,7 +59,7 @@
         </table>
         {{/each}}
     </div>
-    <div class="col-lg-3"></div>
+    <div class="col-lg-2"></div>
 </div>
 
 <form method="post" action="" id="form-delete"></form>

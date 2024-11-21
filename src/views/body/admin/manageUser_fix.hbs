@@ -19,11 +19,16 @@
             </div>
             <div class="form-group mt-3">
                 <label class="mb-2">Mã người dùng</label>
-                <input type="text" class="form-control" name="userId" value="{{fixUser.userId}}" required>
+                <input type="text" class="form-control" name="userId" value="{{fixUser.userId}}" required readonly>
             </div>
             <div class="form-group mt-3">
+                <label class="mb-2">Email người dùng</label>
+                <input type="email" class="form-control" name="email" value="{{fixUser.email}}">
+            </div>
+            <div class="form-group mt-3" style="display: none;">
                 <label class="mb-2">Loại người dùng</label>
-                <select id="role-user" class="form-select" aria-label="Default select example" name="role" required>
+                <select id="role-user" class="form-select" aria-label="Default select example" name="role" value
+                    required readonly>
                     <option value="student" {{#if (checkRoleFix fixUser.role "student" )}}selected{{/if}}>Sinh viên
                     </option>
                     <option value="teacher" {{#if (checkRoleFix fixUser.role "teacher" )}}selected{{/if}}>Giảng viên
@@ -33,7 +38,18 @@
             </div>
             <div class="form-group mt-3" id="facultyInput" style="display: none;">
                 <label class="mb-2">Khoa</label>
-                <input type="text" class="form-control" name="faculty" value="{{fixUser.faculty}}" required>
+                <select class="form-select" aria-label="Default select example" name="faculty" required>
+                    <option value="Điện Điện-Tử" {{#if (checkRoleFix fixUser.faculty "Điện Điện-Tử" )}}selected{{/if}}>
+                        Điện Điện-Tử
+                    </option>
+                    <option value="Khoa Học và Kỹ Thuật Máy Tính" {{#if (checkRoleFix
+                        fixUser.faculty "Khoa Học và Kỹ Thuật Máy Tính" )}}selected{{/if}}>Khoa Học và Kỹ Thuật Máy
+                        Tính
+                    </option>
+                    <option value="Khoa Học Ứng Dụng" {{#if (checkRoleFix fixUser.faculty "Khoa Học Ứng Dụng"
+                        )}}selected{{/if}}>Khoa Học Ứng Dụng
+                    </option>
+                </select>
             </div>
             <div class="form-group mt-3">
                 <label class="mb-2">Ngày sinh</label>
@@ -43,6 +59,11 @@
                 <label class="mb-2">Địa chỉ</label>
                 <input type="text" class="form-control" name="address" value="{{fixUser.address}}" required>
             </div>
+            {{#if success}}
+            <div class="mt-3">
+                <p style="color: green; text-align: center; margin: 0">{{success}}</p>
+            </div>
+            {{/if}}
             <div style="display: flex; justify-content: center;">
                 <button id="btn" type="submit" class="btn btn-primary mt-3 mb-3" style="width: 100%; height: 50px">
                     Thay đổi
