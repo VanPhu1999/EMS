@@ -21,7 +21,8 @@ const login = {
                 httpOnly: true,  // Chỉ cho phép truy cập từ server (bảo vệ khỏi XSS)
                 secure: process.env.NODE_ENV === 'production', // Chỉ dùng cookie này khi HTTPS
             });
-            res.redirect("/");
+            if (user.role == "admin") res.redirect("/manageUser");
+            else res.redirect("/");
         }
     }
 }

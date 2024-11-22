@@ -47,16 +47,64 @@ app.engine('hbs', engine({
             else return b
         },
         showEmptyData: function (a) {
-            if (a) return a;
+            if (typeof a === 'number' && !isNaN(a)) return a;
             else return "–";
         },
         calcFinal: function (a, b, c) {
-            if (a && b && c) {
-                return ((a + b + c) / 3).toFixed(1);
+            if ((typeof a === 'number' && !isNaN(a)) &&
+                (typeof b === 'number' && !isNaN(b)) &&
+                (typeof c === 'number' && !isNaN(c))) {
+                return Number((a * 0.2 + b * 0.3 + c * 0.5).toFixed(1));
             }
         },
         sum: function (a, b) {
             return a + b;
+        },
+        subtract: function (a, b) {
+            return a - b;
+        },
+        avg: function (a, b) {
+            if (b == 0) return "–";
+            else return (a / b).toFixed(1);
+        },
+        checkPre: function (a, b) {
+            if (a > b) return false;
+            return true;
+        },
+        checkNext: function (a, b) {
+            if (a < b) return false;
+            return true;
+        },
+        calcIndex: function (a, b, c) {
+            return a + 1 + (b - 1) * c;
+        },
+        checkToshowFac: function (a) {
+            if (a == "student" || a == "teacher") return true;
+            return false;
+        },
+        checkAdmin: function (a) {
+            if (a == "admin") return true;
+            return false;
+        },
+        checkTeacher: function (a) {
+            if (a == "teacher") return true;
+            return false;
+        },
+        checkStudent: function (a) {
+            if (a == "student") return true;
+            return false;
+        },
+        checkStudentAndTeacher: function (a) {
+            if (a == "student" || a == "teacher") return true;
+            return false;
+        },
+        checkAdminAndTeacher: function (a) {
+            if (a == "admin" || a == "teacher") return true;
+            return false;
+        },
+        checkScheduleContinue: function (a) {
+            if (a == "Đang Học") return true;
+            return false;
         }
     },
 }));
@@ -68,6 +116,8 @@ app.use(express.static(path.join(__dirname, 'src/public')));
 //cau hinh database
 const db = require("./src/config/database");
 db.connect();
+
+console.log(process.env.PORT);
 
 //cau hinh route
 const route = require("./src/routes/index");

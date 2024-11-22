@@ -14,9 +14,12 @@ const scheduleSchema = new mongoose.Schema({
     semester: { type: String, required: true },
     day: { type: String, required: true },
     period: { type: String, required: true },
+    room: { type: String, required: true },
     content: [{
         tittle: { type: String },
+        img_id: { type: String },
         img: { type: String },
+        video_id: { type: String },
         video: { type: String },
         subTittle: { type: String },
         body: { type: String }
@@ -24,5 +27,5 @@ const scheduleSchema = new mongoose.Schema({
     state: { type: String, default: "Đang Học" }
 }, { timestamps: true });
 
-const schedule = mongoose.model('schedule', scheduleSchema, "schedules");
+const schedule = mongoose.model('Schedule', scheduleSchema, "schedules");
 module.exports = schedule;

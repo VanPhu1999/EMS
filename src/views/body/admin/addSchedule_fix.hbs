@@ -4,7 +4,7 @@
         <a href="/addSchedule">
             <button class="btn btn-primary mt-3 mb-3">Quay Lại</button>
         </a>
-        <h1 style="text-align: center;">Chỉnh sửa lịch học</h1>
+        <h1 style="text-align: center;">{{schedule.courseName}} - {{schedule.courseId}}</h1>
     </div>
     <div class="col-lg-4"></div>
 </div>
@@ -18,12 +18,14 @@
                 <input type="text" class="form-control" name="teacherName" required value="{{schedule.teacherName}}">
             </div>
             <div class="form-group mt-3">
-                <label class="mb-2">Mã giảng viên</label>
-                <input type="text" class="form-control" name="teacherId" value="{{schedule.teacherId}}" required>
+                <label for="exampleInputEmail1" class="mb-2">Mã Giảng viên</label>
+                <select class="form-select" aria-label="Default select example" name="teacherId" required>
+                    <option value="{{schedule.teacherId}}">{{schedule.teacherId}}</option>
+                </select>
             </div>
             <div class="form-group mt-3">
                 <label class="mb-2">Học kỳ</label>
-                <input type="text" class="form-control" name="semester" value="{{schedule.semester}}" required>
+                <input type="text" class="form-control" name="semester" value="{{schedule.semester}}" required readonly>
             </div>
             <div class="form-group mt-3">
                 <label class="mb-2">Thứ</label>
@@ -34,6 +36,10 @@
                 <input type="text" class="form-control" name="period" value="{{schedule.period}}" required>
             </div>
             <div class="form-group mt-3">
+                <label class="mb-2">Phòng</label>
+                <input type="text" class="form-control" name="room" value="{{schedule.room}}" required>
+            </div>
+            <div class="form-group mt-3">
                 <label class="mb-2">Tình trạng</label>
                 <select id="role-user" class="form-select" aria-label="Default select example" name="state" required>
                     <option value="Đang Học" {{#if (checkRoleFix schedule.state "Đang Học" )}}selected{{/if}}>Đang học
@@ -42,6 +48,12 @@
                     </option>
                 </select>
             </div>
+            {{#if warning}}
+            <p style="text-align: center; color: red;">{{warning}}</p>
+            {{/if}}
+            {{#if success}}
+            <p style="text-align: center; color: green;">{{success}}</p>
+            {{/if}}
             <div style="display: flex; justify-content: center;">
                 <button id="btn" type="submit" class="btn btn-primary mt-3 mb-3" style="width: 100%; height: 50px">
                     Thay đổi
@@ -51,3 +63,24 @@
     </div>
     <div class="col-lg-4"></div>
 </div>
+
+<div id="teachers" data="{{teachers}}"></div>
+
+<script>
+    let getTeachers = document.querySelector('#teachers');
+    let teachers = JSON.parse(getTeachers.getAttribute('data'));
+    let teacherName = document.querySelector('[name="teacherName"]');
+    let teacherId = document.querySelector('[name="teacherId"]');
+    teacherName.addEventListener('blur', () => {
+        const value = teacherName.value.trim().toLowerCase();
+        teacherId.innerHTML = "";
+        teachers.forEach(teacher => {
+            if (teacher.name.toLowerCase() == value) {
+                const option = document.createElement('option');
+                option.value = teacher.userId;
+                option.textContent = teacher.userId;
+                teacherId.appendChild(option);
+            }
+        })
+    })
+</script>

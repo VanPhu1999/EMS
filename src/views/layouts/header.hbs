@@ -2,6 +2,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark" style="align-items: center; background-color:#0388B4;">
         <div class=" collapse navbar-collapse" id="navbarSupportedContent" style="justify-content: space-between;">
             <ul class="navbar-nav mr-auto">
+                {{#if (checkStudentAndTeacher user.role)}}
                 <li class="nav-item">
                     <a class="nav-link" style="margin-left: 30px" href="/">
                         <img src="//lms.hcmut.edu.vn/pluginfile.php/3/theme_academi/logo/1725955904/logoBK.png" alt=""
@@ -13,13 +14,24 @@
                     <a class="nav-link" href="/schedule">
                         Thời khóa biểu</a>
                 </li>
+                {{/if}}
+                {{#if (checkStudent user.role)}}
+                <li class="nav-item">
+                    <a class="nav-link" href="/gpa">
+                        Bảng điểm</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/registerCourse">
                         Đăng ký môn học</a>
                 </li>
+                {{/if}}
+                {{#if (checkAdmin user.role)}}
                 <li class="nav-item">
                     <a class="nav-link" href="/manageUser">
-                        Quản lý người dùng</a>
+                        <img src="//lms.hcmut.edu.vn/pluginfile.php/3/theme_academi/logo/1725955904/logoBK.png" alt=""
+                            class="avatar-2">
+                        Quản lý người dùng
+                    </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/addCourse">
@@ -29,16 +41,17 @@
                     <a class="nav-link" href="/addSchedule">
                         Quản lý lịch học</a>
                 </li>
+                {{/if}}
             </ul>
             <div class="d-flex">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
                     aria-expanded="true" style="color: white;">
-                    <img src="/img/avatar.jpg" alt="" class="avatar">
+                    <img src="{{#if user.img}}{{user/img}}{{else}}/img/default/avatar.jpg{{/if}}" alt="" class="avatar">
                     {{user.name}}
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#">Hồ sơ cá nhân</a></li>
-                    <li><a class="dropdown-item" href="#">Cài đặt</a></li>
+                    <li><a class="dropdown-item" href="/userProfile/{{user._id}}">Hồ sơ cá nhân</a></li>
+                    <li><a class="dropdown-item" href="/changePassword">Đổi mật khẩu</a></li>
                     <li>
                         <hr class="dropdown-divider">
                     </li>

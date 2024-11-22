@@ -1,0 +1,119 @@
+<div class="row">
+    <div style="margin-top: 40px;">
+    </div>
+    <div class="col-lg-3"></div>
+    <div class="col-lg-6">
+        <h3 class="card-title" style="text-align: center;">Hồ sơ người dùng</h3>
+        <form method="post" action="/userProfile/{{user._id}}?_method=PATCH" enctype="multipart/form-data">
+            <div
+                style="height: auto; display: flex-start; flex-direction: column; justify-content: flex-start; align-items: center;">
+                <div style="display: flex; width: 100%; justify-content: center; align-items: center;">
+                    <div id="img" class="profile-image-container"
+                        style="position: relative; display: flex; justify-content: flex-start; align-items: center; width: 25%;">
+                        <img id="img-src" src="{{#if user.img}} {{user.img}} {{else}}/img/default/avatar.jpg{{/if}}"
+                            class="rounded-circle profile-image" alt="User Image"
+                            style="width: 200px; height: 200px; object-fit: cover;">
+                    </div>
+                    <div
+                        style="display: flex; flex-direction: column; align-items: flex-start; width: 75%; justify-content: center;">
+                        <label for="userName" class="mb-2" style="margin-top: 18px"><strong>Họ và tên</strong></label>
+                        <input type="text" class="form-control" name="name" id="userName" value="{{user.name}}"
+                            readonly>
+                        <label for="userId" class="mb-2" style="margin-top: 18px"><strong>Mã {{roletoString
+                                user.role}}</strong></label>
+                        <input type="text" class="form-control" value="{{user.userId}}" readonly>
+                    </div>
+                </div>
+                <div style="width: 100%; text-align: left; margin-top: 20px;">
+                    <label for="userId" class="mb-2" style="margin-top: 18px"><strong>Loại người dùng</strong></label>
+                    <input type="text" class="form-control" value="{{roletoString user.role}}" readonly>
+                    {{#if (checkToshowFac user.role)}}
+                    <label for="userId" class="mb-2" style="margin-top: 18px"><strong>Khoa</strong></label>
+                    <input type="text" class="form-control" value="{{user.faculty}}" readonly>
+                    {{/if}}
+                    <label for="name" class="mb-2" style="margin-top: 18px"><strong>Email</strong></label>
+                    <input type="email" class="form-control" name="email" id="email" value="{{user.email}}" readonly>
+                    <label for="userId" class="mb-2" style="margin-top: 18px"><strong>Ngày sinh</strong></label>
+                    <input type="date" class="form-control" name="dateOfBirth" id="dateOfBirth"
+                        value="{{user.dateOfBirth}}" readonly>
+                    <label for="userId" class="mb-2" style="margin-top: 18px"><strong>Địa chỉ</strong></label>
+                    <input type="text" class="form-control" name="address" id="address" value="{{user.address}}"
+                        readonly>
+                </div>
+            </div>
+            <div style="display: flex; justify-content: center; margin-top: 25px">
+                <button id="btn-fix" type="button" class="btn btn-primary mt-3 mb-3" style="width: 35%; height: 50px">
+                    Chỉnh sửa thông tin
+                </button>
+                <button id="btn-submit" type="submit" class="btn btn-primary mt-3 mb-3"
+                    style="width: 20%; height: 50px; display: none; margin-right: 15px">
+                    Thay đổi
+                </button>
+                <button id="btn-cancel" type="button" class="btn btn-primary mt-3 mb-3"
+                    style="width: 20%; height: 50px; display: none">
+                    Hủy bỏ
+                </button>
+        </form>
+    </div>
+</div>
+<div class="col-lg-3"></div>
+</div>
+
+<div id="userJSON" data="{{userJSON}}"></div>
+
+<script>
+    const getUserJSON = document.querySelector('#userJSON');
+    const user = JSON.parse(getUserJSON.getAttribute('data'));
+    const img = document.querySelector('#img');
+    const imgSrc = document.querySelector('#img-src');
+    const userName = document.querySelector('#userName');
+    const email = document.querySelector('#email');
+    const dateOfBirth = document.querySelector('#dateOfBirth');
+    const address = document.querySelector('#address');
+    const btnFix = document.querySelector('#btn-fix');
+    const btnSubmit = document.querySelector('#btn-submit');
+    const btnCancel = document.querySelector('#btn-cancel');
+    let imgChange;
+    btnFix.addEventListener('click', () => {
+        const overlayHTML = `
+            <div class="overlay" id="overlay"
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); color: white; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s;">
+                <span style="cursor: pointer;">Thay đổi</span>
+            </div>
+            <input type="file" id="input-img" name="img" class="file-input"
+                style="opacity: 0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; cursor: pointer;">
+        `;
+        img.insertAdjacentHTML("beforeend", overlayHTML);
+        userName.readOnly = false;
+        email.readOnly = false;
+        dateOfBirth.readOnly = false;
+        address.readOnly = false;
+        btnFix.style.display = "none";
+        btnSubmit.style.display = "inline-block";
+        btnCancel.style.display = "inline-block";
+        imgChange = document.querySelector('#input-img');
+        imgChange.addEventListener('change', (event) => {
+            if (event.target.files[0])
+                imgSrc.src = URL.createObjectURL(event.target.files[0]);
+        })
+    });
+    btnCancel.addEventListener('click', () => {
+        const imgInput = document.querySelector('#input-img');
+        const imgOverlay = document.querySelector('#overlay');
+        if (imgInput) imgInput.remove();
+        if (imgOverlay) imgOverlay.remove();
+        userName.readOnly = true;
+        userName.value = user.name;
+        email.readOnly = true;
+        email.value = user.email;
+        dateOfBirth.readOnly = true;
+        dateOfBirth.value = user.dateOfBirth;
+        address.readOnly = true;
+        address.value = user.address;
+        imgSrc.src = user.img ? user.img : "/img/default/avatar.jpg";
+        btnFix.style.display = "block";
+        btnSubmit.style.display = "none";
+        btnCancel.style.display = "none";
+    });
+
+</script>
