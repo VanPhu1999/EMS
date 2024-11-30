@@ -99,7 +99,9 @@ const manageUser = {
     },
     renderAdd: async (req, res) => {
         const user = await User.findById(req.user.id).lean();
-        const users = await User.find().lean();
+        const users = await User.find()
+            .sort('userId')
+            .lean();
         let warning = false;
         let success = false;
         if (req.cookies.warning) {

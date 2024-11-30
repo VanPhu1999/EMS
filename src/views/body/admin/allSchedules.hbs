@@ -5,7 +5,7 @@
         <form method="get" action="/addSchedule?info={{info-input.value}}" id="form">
             <div class="form-group" style="justify-items: center; text-align: center;">
                 <input type="text" class="form-control" id="info-input" style="width: 50%; display: inline-block"
-                    name="info" placeholder="Nhập tên/mã người dùng">
+                    name="info" placeholder="Nhập tên/mã môn học">
                 <button style="submit" class="btn btn-primary mt-3 mb-3">
                     Tìm kiếm
                 </button>
@@ -22,7 +22,7 @@
         {{#if success}}
         <p style="text-align: center; color: green;">{{success}}</p>
         {{/if}}
-        <div style="height: 500px;">
+        <div style="min-height: 500px;">
             <table class="table">
                 <thead>
                     <tr>
